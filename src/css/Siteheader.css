@@ -1,0 +1,32 @@
+.logo img {
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+.text{
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3; /* Button background color on hover */
+  /* Add any other styles for the button on hover */
+}

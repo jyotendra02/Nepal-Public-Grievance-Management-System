@@ -1,15 +1,17 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-
+import SiteHeader from "./components/Siteheader";
 import FileUpload from "./components/FileUpload";
+import GrievanceForm from "./components/GrievanceForm";
 
 
 const App: React.FC = () => {
   
   return (
     <div className="">
-      <Navbar />
-      <FileUpload></FileUpload>
+      <SiteHeader></SiteHeader>
+      <GrievanceForm></GrievanceForm>
+      
+
     </div>
   );
 };
