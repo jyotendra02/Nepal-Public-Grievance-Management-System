@@ -15,6 +15,8 @@ type FormData = {
   grievanceTitle: string;
   grievanceDescription: string;
   policeStation: string;
+  
+  // Add more fields as needed
 };
 
 function GrievanceForm() {
@@ -30,6 +32,8 @@ function GrievanceForm() {
     grievanceTitle: "",
     grievanceDescription: "",
     policeStation: "",
+   
+    // Initialize additional fields here
   };
 
   const [formData, setFormData] = useState(initialFormData);
