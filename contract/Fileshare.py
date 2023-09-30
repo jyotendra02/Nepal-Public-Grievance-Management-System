@@ -3,29 +3,30 @@ import smartpy as sp
 class Fileshare(sp.Contract):
     def __init__(self):
         self.init(
-            user  = sp.big_map(tkey=sp.TAddress,tvalue=sp.TMap(sp.TNat,sp.TString))  
+            complaint=sp.big_map(tkey=sp.TNat, tvalue=sp.TRecord(address = sp.TAddress, string=sp.TString)),
+            complaint_nu=sp.nat(1)
         )
         
     @sp.entry_point
-    def add_user(self, url):      
-        if self.data.user.contains(sp.sender):
-            my_list = self.data.user[sp.sender]
-            my_list[sp.len(my_list)] = url
-            self.data.user[sp.sender]=my_list
-        else:
-            self.data.user[sp.sender] = {0: url}
+    def add(self, url): 
+        sp.set_type(url, sp.TString)
+        data = sp.record(address = sp.sender, string = url)
+        self.data.complaint[self.data.complaint_nu] = data
+        self.data.complaint_nu += 1
+     
+    @sp.entry_point
+    def alias(self):
+        self.data.complaint
         
 @sp.add_test(name="main")
 def test():
     scenario = sp.test_scenario()
-    #test account
+    # Test account
     shreyas = sp.test_account("shreyas")
-    jyotendra = sp.test_account("jyotendra")
-    ojas = sp.test_account("ojas")
-    harsh = sp.test_account("harsh")
     
     file = Fileshare()
     scenario += file
-    scenario.h1("Chal Hatt Be Sale")
 
-    scenario += file.add_user("abc").run(sender = shreyas)
+    scenario += file.add("https://cedro.finance/").run(sender=shreyas)
+    scenario += file.add("https://cedro.finance/").run(sender=shreyas)
+    scenario += file.add("https://cedro.finance/").run(sender=shreyas)
