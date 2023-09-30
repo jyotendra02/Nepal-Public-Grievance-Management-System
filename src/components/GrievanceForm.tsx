@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios"; // Import axios for making API requests
-import "../css/GrievanceForm.css"; // Import the CSS file for styling
+import axios from "axios";
+import "../css/GrievanceForm.css";
 
-// Define the type for the form data
 type FormData = {
+  [key: string]: string | FileList | null;
   name: string;
   fatherName: string;
   mobileNumber: string;
@@ -15,12 +15,11 @@ type FormData = {
   grievanceTitle: string;
   grievanceDescription: string;
   policeStation: string;
-  photo: File | null;
-  pdf: File | null;
+  photo: FileList | null;
+  pdf: FileList | null;
 };
 
 function GrievanceForm() {
-  // Define the initial state for form data
   const initialFormData: FormData = {
     name: "",
     fatherName: "",
@@ -39,18 +38,16 @@ function GrievanceForm() {
 
   const [formData, setFormData] = useState(initialFormData);
 
-  // Event handler to update form data when input fields change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
-    let newValue: string | File | null = value;
+    let newValue: string | FileList | null = value;
 
     if (type === "file") {
-      // Type assertion to specify that e.target is an HTMLInputElement
       const fileInput = e.target as HTMLInputElement;
       if (fileInput.files && fileInput.files.length > 0) {
-        newValue = fileInput.files[0];
+        newValue = fileInput.files;
       } else {
         newValue = null;
       }
@@ -62,43 +59,18 @@ function GrievanceForm() {
     });
   };
 
-  // Event handler for form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Create a new FormData object to store the form data
     const formDataToSend = new FormData();
 
-    // Iterate over the formData state and append each key-value pair to formDataToSend
     for (const key in formData) {
       if (formData.hasOwnProperty(key)) {
         formDataToSend.append(key, formData[key] as string | Blob);
       }
     }
+   };
 
-    try {
-      // Upload the form data to Pinata
-      const resFile = await axios({
-        method: "post",
-        url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        data: formDataToSend,
-        headers: {
-          pinata_api_key: "YOUR_PINATA_API_KEY",
-          pinata_secret_api_key: "YOUR_PINATA_SECRET_API_KEY",
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // The IPFS hash where the data is stored
-      const dataHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
-
-      // Now you can use 'dataHash' or perform any further actions
-      console.log("Data Hash:", dataHash);
-    } catch (error) {
-      console.error("Error uploading to Pinata:", error);
-    }
-  };
-  
   return (
     <div className="grievance-form-wrapper">
       <div className="grievance-form">
@@ -237,6 +209,7 @@ function GrievanceForm() {
               name="photo"
               accept="image/*"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -248,6 +221,7 @@ function GrievanceForm() {
               id="pdf-en"
               name="pdf"
               accept=".pdf"
+              onChange={handleInputChange}
             />
           </div>
 
