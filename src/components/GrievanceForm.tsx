@@ -1,9 +1,27 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import axios from "axios"; // Import axios for making API requests
 import "../css/GrievanceForm.css"; // Import the CSS file for styling
+
+// Define the type for the form data
+type FormData = {
+  name: string;
+  fatherName: string;
+  mobileNumber: string;
+  dob: string;
+  villageLocality: string;
+  addressLine1: string;
+  addressLine2: string;
+  pincode: string;
+  grievanceTitle: string;
+  grievanceDescription: string;
+  policeStation: string;
+  photo: File | null;
+  pdf: File | null;
+};
 
 function GrievanceForm() {
   // Define the initial state for form data
-  const [formData, setFormData] = useState({
+  const initialFormData: FormData = {
     name: "",
     fatherName: "",
     mobileNumber: "",
@@ -15,9 +33,11 @@ function GrievanceForm() {
     grievanceTitle: "",
     grievanceDescription: "",
     policeStation: "",
-    photo: null as File | null, // Use null as the initial value for file inputs
-    pdf: null as File | null,
-  });
+    photo: null,
+    pdf: null,
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   // Event handler to update form data when input fields change
   const handleInputChange = (
@@ -43,9 +63,40 @@ function GrievanceForm() {
   };
 
   // Event handler for form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+
+    // Create a new FormData object to store the form data
+    const formDataToSend = new FormData();
+
+    // Iterate over the formData state and append each key-value pair to formDataToSend
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        formDataToSend.append(key, formData[key] as string | Blob);
+      }
+    }
+
+    try {
+      // Upload the form data to Pinata
+      const resFile = await axios({
+        method: "post",
+        url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        data: formDataToSend,
+        headers: {
+          pinata_api_key: "YOUR_PINATA_API_KEY",
+          pinata_secret_api_key: "YOUR_PINATA_SECRET_API_KEY",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // The IPFS hash where the data is stored
+      const dataHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
+
+      // Now you can use 'dataHash' or perform any further actions
+      console.log("Data Hash:", dataHash);
+    } catch (error) {
+      console.error("Error uploading to Pinata:", error);
+    }
   };
   
   return (
