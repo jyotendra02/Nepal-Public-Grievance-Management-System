@@ -16,10 +16,7 @@ type FormData = {
   grievanceTitle: string;
   grievanceDescription: string;
   policeStation: string;
-  photo: FileList | null;
-  pdf: FileList | null;
-  newField1: string;
-  newField2: string;
+  
   // Add more fields as needed
 };
 
@@ -36,10 +33,7 @@ function GrievanceForm() {
     grievanceTitle: "",
     grievanceDescription: "",
     policeStation: "",
-    photo: null,
-    pdf: null,
-    newField1: "",
-    newField2: "",
+   
     // Initialize additional fields here
   };
 
