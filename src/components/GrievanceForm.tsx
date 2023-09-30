@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import axios from "axios";
 import { Document, Page, Text, View, StyleSheet, PDFViewer } from "@react-pdf/renderer";
 import "../css/GrievanceForm.css";
+import { addOperation } from "../utils/operation";
 
 type FormData = {
   [key: string]: string | FileList | null;
@@ -60,6 +62,7 @@ function GrievanceForm() {
 
   const generatePdf = () => {
     return (
+      
       <Document>
         <Page size="A4">
           <View style={styles.container}>
@@ -82,15 +85,54 @@ function GrievanceForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const pdfDocument = generatePdf();
+  
 
-    const formDataToSend = new FormData();
-
-    for (const key in formData) {
-      if (formData.hasOwnProperty(key)) {
-        formDataToSend.append(key, formData[key] as string | Blob);
+      const elementToBlob = async (element: React.ReactElement) => {
+        const blob = await new Promise<Blob | null>((resolve) => {
+          const container = document.createElement("div");
+          ReactDOM.render(element, container, () => {
+            const pdfBlob = new Blob([container.innerHTML], {
+              type: "application/pdf",
+            });
+            resolve(pdfBlob);
+          });
+        });
+        return blob;
+      };
+    
+      const pdfBlob = await elementToBlob(pdfDocument);
+    
+      const formDataToSend = new FormData();
+      
+      for (const key in formData) {
+        if (formData.hasOwnProperty(key)) {
+          formDataToSend.append(key, formData[key] as string);
+        }
       }
+      if (pdfBlob) {
+        formDataToSend.append("pdf", pdfBlob);
+      }
+      const resFile = await axios({
+        method: "post",
+        url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        data: pdfDocument,
+        headers: {
+          pinata_api_key: `76d92b17caf26289fe6c`,  
+          pinata_secret_api_key: `91d3521125be00147dc0ff64096ab8706c7533c236bfc9114a47618c5a470090`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      const DataHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
+      await addOperation(DataHash);
+      
+    } catch (error) {
+      alert(error)
     }
-
+  
+   
     setShowPdf(true);
   };
 
@@ -192,7 +234,7 @@ function GrievanceForm() {
             <label htmlFor="pincode-en">Pincode:</label>
             <p>पिनकोड:</p>
             <input
-              type="text"
+              type="number"
               id="pincode-en"
               name="pincode"
               placeholder="Enter pincode / पिनकोड प्रविष्ट गर्नुहोस्"

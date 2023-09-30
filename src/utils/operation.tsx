@@ -1,6 +1,6 @@
 import { tezos } from "./tezos"
 
-export const addUserOperation = async (DataHash: String) => {
+export const addOperation = async (DataHash: String) => {
     try {
         const contract = await tezos.wallet.at("KT1UTRXBSt1NePtBG5LobtBvhRaSdeaszxUB");
         const op =  await contract.methods.add(DataHash).send()

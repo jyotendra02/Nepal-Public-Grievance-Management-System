@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addUserOperation } from "../utils/operation";
+import { addOperation } from "../utils/operation";
 import axios from "axios";
 
 const FileUpload: React.FC = () => {
@@ -33,7 +33,7 @@ const FileUpload: React.FC = () => {
           });
 
           const DataHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
-          await addUserOperation(DataHash);
+          await addOperation(DataHash);
         } catch (error) {
           alert(error);
         }
