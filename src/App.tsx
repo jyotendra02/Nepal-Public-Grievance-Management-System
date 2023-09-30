@@ -1,8 +1,7 @@
 import React from "react";
 import SiteHeader from "./components/Siteheader";
-import FileUpload from "./components/FileUpload";
 import GrievanceForm from "./components/GrievanceForm";
-
+import Footer from "./components/Footer";
 
 const App: React.FC = () => {
   
@@ -10,7 +9,7 @@ const App: React.FC = () => {
     <div className="">
       <SiteHeader></SiteHeader>
       <GrievanceForm></GrievanceForm>
-      
+      <Footer></Footer>
 
     </div>
   );

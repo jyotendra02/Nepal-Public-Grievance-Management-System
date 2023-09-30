@@ -1,0 +1,50 @@
+/* Footer.css */
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px; /* Set a fixed height for a single line */
+  padding: 0 20px;
+  font-family: 'Roboto', sans-serif; /* Use a modern font */
+}
+
+.copyright,
+.contact {
+  display: flex;
+  align-items: center;
+}
+
+.copyright p,
+.contact p {
+  margin: 0;
+  font-size: 14px; /* Adjust font size */
+}
+
+.contact {
+  margin-left: 20px; /* Increase space between "Contact us" and icons */
+}
+
+.social-icons {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-icons li {
+  display: inline;
+  margin-right: 15px; /* Increase space between icons */
+}
+
+.icon-link {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.icon-link:hover {
+  opacity: 0.8;
+}
