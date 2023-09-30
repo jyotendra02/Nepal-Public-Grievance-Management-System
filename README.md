@@ -27,7 +27,6 @@ RPC URL : https://ghostnet.smartpy.io
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
