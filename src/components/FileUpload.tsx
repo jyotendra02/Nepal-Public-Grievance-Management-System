@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { addUserOperation } from "../utils/operation";
-import { tezos } from "../utils/tezos";
 import axios from "axios";
 
 const FileUpload: React.FC = () => {
@@ -19,7 +18,7 @@ const FileUpload: React.FC = () => {
           if (fileName) {
             formData.append("file", blob, fileName);
           } else {
-            formData.append("file", blob); // Handle case where fileName is null
+            formData.append("file", blob); 
           }
     
           const resFile = await axios({
@@ -33,8 +32,8 @@ const FileUpload: React.FC = () => {
             },
           });
 
-          const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
-          await addUserOperation(ImgHash);
+          const DataHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
+          await addUserOperation(DataHash);
         } catch (error) {
           alert(error);
         }

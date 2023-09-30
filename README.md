@@ -10,6 +10,6 @@ In the project directory, you can run:
 
 ## NFT Contracts
 
-Ghostnet contract : "KT1ReoVnKqK1mPN9GUgKKAJtzQf5JMAACLxJ"
+Ghostnet contract : "KT1UTRXBSt1NePtBG5LobtBvhRaSdeaszxUB"
 
 RPC URL : https://ghostnet.smartpy.io
