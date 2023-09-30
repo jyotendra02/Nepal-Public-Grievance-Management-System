@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Document, Page, Text, View, StyleSheet, PDFViewer } from "@react-pdf/renderer";
 import "../css/GrievanceForm.css";
 
 type FormData = {
@@ -17,6 +18,9 @@ type FormData = {
   policeStation: string;
   photo: FileList | null;
   pdf: FileList | null;
+  newField1: string;
+  newField2: string;
+  // Add more fields as needed
 };
 
 function GrievanceForm() {
@@ -34,9 +38,13 @@ function GrievanceForm() {
     policeStation: "",
     photo: null,
     pdf: null,
+    newField1: "",
+    newField2: "",
+    // Initialize additional fields here
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [showPdf, setShowPdf] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -59,6 +67,28 @@ function GrievanceForm() {
     });
   };
 
+  const generatePdf = () => {
+    return (
+      <Document>
+        <Page size="A4">
+          <View style={styles.container}>
+            <Text>Name: {formData.name}</Text>
+            <Text>Father's Name / Husband's Name: {formData.fatherName}</Text>
+            <Text>Mobile Number: {formData.mobileNumber}</Text>
+            <Text>Date of Birth: {formData.dob}</Text>
+            <Text>Village / Locality Name: {formData.villageLocality}</Text>
+            <Text>Address Line 1: {formData.addressLine1}</Text>
+            <Text>Address Line 2: {formData.addressLine2}</Text>
+            <Text>Pincode: {formData.pincode}</Text>
+            <Text>Grievance Title: {formData.grievanceTitle}</Text>
+            <Text>Grievance Description: {formData.grievanceDescription}</Text>
+            <Text>Nearest Police Station: {formData.policeStation}</Text>    
+          </View>
+        </Page>
+      </Document>
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -69,13 +99,24 @@ function GrievanceForm() {
         formDataToSend.append(key, formData[key] as string | Blob);
       }
     }
-   };
+
+    // You can send formDataToSend to your server using Axios or another HTTP library here.
+
+    // Generate and display the PDF
+    setShowPdf(true);
+  };
+
+  const styles = StyleSheet.create({
+    container: {
+      padding: 20,
+    },
+  });
 
   return (
     <div className="grievance-form-wrapper">
       <div className="grievance-form">
         <h2>Grievance Form / निरिक्षाण प्रपत्र</h2>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name-en">Name:</label>
             <p>नाम:</p>
@@ -85,6 +126,7 @@ function GrievanceForm() {
               name="name"
               placeholder="Enter your name / तपाईंको नाम प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -97,6 +139,7 @@ function GrievanceForm() {
               name="fatherName"
               placeholder="Enter father's/husband's name / पिता/पति को नाम प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -109,13 +152,14 @@ function GrievanceForm() {
               name="mobileNumber"
               placeholder="Enter your mobile number / तपाईंको मोबाइल नम्बर प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
           <div className="form-group">
             <label htmlFor="dob-en">Date of Birth:</label>
             <p>जन्म मिति:</p>
-            <input type="date" id="dob-en" name="dob" required />
+            <input type="date" id="dob-en" name="dob" required onChange={handleInputChange} />
           </div>
 
           <div className="form-group">
@@ -127,6 +171,7 @@ function GrievanceForm() {
               name="villageLocality"
               placeholder="Enter village/locality name / गाउँ/स्थानियता को नाम प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -139,6 +184,7 @@ function GrievanceForm() {
               name="addressLine1"
               placeholder="Enter address line 1 / पत्ता प्रमुख लाइन प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -150,6 +196,7 @@ function GrievanceForm() {
               id="addressLine2-en"
               name="addressLine2"
               placeholder="Enter address line 2 / पत्ता लाइन २ प्रविष्ट गर्नुहोस्"
+              onChange={handleInputChange}
             />
           </div>
 
@@ -162,6 +209,7 @@ function GrievanceForm() {
               name="pincode"
               placeholder="Enter pincode / पिनकोड प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -174,6 +222,7 @@ function GrievanceForm() {
               name="grievanceTitle"
               placeholder="Enter grievance title / दु: खको शीर्षक प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             />
           </div>
 
@@ -185,48 +234,36 @@ function GrievanceForm() {
               name="grievanceDescription"
               placeholder="Enter grievance description / दु: खको विवरण प्रविष्ट गर्नुहोस्"
               required
+              onChange={handleInputChange}
             ></textarea>
           </div>
 
           <div className="form-group">
-            <label htmlFor="policeStation-en">Police Station Name:</label>
+            <label htmlFor="policeStation-en">Nearest Police Station:</label>
             <p>प्रहरी थाना नाम:</p>
             <input
               type="text"
               id="policeStation-en"
               name="policeStation"
-              placeholder="Enter police station name / प्रहरी थाना को नाम प्रविष्ट गर्नुहोस्"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="photo-en">Submit your application photo:</label>
-            <p>तपाईंको आवेदन फोटो पेश गर्नुहोस्:</p>
-            <input
-              type="file"
-              id="photo-en"
-              name="photo"
-              accept="image/*"
+              placeholder="Enter Nearest Police Station / नजिकैको प्रहरी चौकी:"
               required
               onChange={handleInputChange}
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="pdf-en">Submit your application PDF (if needed):</label>
-            <p>तपाईंको आवेदन पीडीएफ पेश गर्नुहोस् (आवश्यक छ भने):</p>
-            <input
-              type="file"
-              id="pdf-en"
-              name="pdf"
-              accept=".pdf"
-              onChange={handleInputChange}
-            />
-          </div>
+          {/* Conditional rendering of PDF viewer */}
+          {showPdf && (
+            <div className="pdf-viewer">
+              <PDFViewer width="100%" height="500px">
+                {generatePdf()}
+              </PDFViewer>
+            </div>
+          )}
 
           {/* Submit Button */}
-          <button type="submit" className="button">Submit</button>
+          <button type="submit" className="button">
+            Submit
+          </button>
         </form>
       </div>
     </div>
