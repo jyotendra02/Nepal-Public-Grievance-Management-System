@@ -1,12 +1,58 @@
-import React from "react";
+import React, {useState} from "react";
 import "../css/GrievanceForm.css"; // Import the CSS file for styling
 
 function GrievanceForm() {
+  // Define the initial state for form data
+  const [formData, setFormData] = useState({
+    name: "",
+    fatherName: "",
+    mobileNumber: "",
+    dob: "",
+    villageLocality: "",
+    addressLine1: "",
+    addressLine2: "",
+    pincode: "",
+    grievanceTitle: "",
+    grievanceDescription: "",
+    policeStation: "",
+    photo: null as File | null, // Use null as the initial value for file inputs
+    pdf: null as File | null,
+  });
+
+  // Event handler to update form data when input fields change
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+    let newValue: string | File | null = value;
+
+    if (type === "file") {
+      // Type assertion to specify that e.target is an HTMLInputElement
+      const fileInput = e.target as HTMLInputElement;
+      if (fileInput.files && fileInput.files.length > 0) {
+        newValue = fileInput.files[0];
+      } else {
+        newValue = null;
+      }
+    }
+
+    setFormData({
+      ...formData,
+      [name]: newValue,
+    });
+  };
+
+  // Event handler for form submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+  
   return (
     <div className="grievance-form-wrapper">
       <div className="grievance-form">
         <h2>Grievance Form / निरिक्षाण प्रपत्र</h2>
-        <form>
+        <form onSubmit={handleSubmit} >
           <div className="form-group">
             <label htmlFor="name-en">Name:</label>
             <p>नाम:</p>
@@ -155,7 +201,7 @@ function GrievanceForm() {
           </div>
 
           {/* Submit Button */}
-          <button type="submit">Submit / पेश गर्नुहोस्</button>
+          <button type="submit" className="button">Submit</button>
         </form>
       </div>
     </div>
