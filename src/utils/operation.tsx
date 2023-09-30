@@ -9,6 +9,7 @@ export const addOperation = async (DataHash: String) => {
     } catch (error) {
         throw error
     }
+    
 };
 
 
