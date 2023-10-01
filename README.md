@@ -16,6 +16,8 @@
 
 The Nepal Public Grievance Management System is a state-of-the-art platform designed to streamline the submission and tracking of grievances from citizens. This platform aims to improve accountability in grievance resolution, enhance transparency, and provide a secure and efficient system for citizens to voice their concerns.
 
+Presentation Video Link: https://www.youtube.com/watch?v=uMPOBBtyV2E
+
 ## Problem Statement
 
 In Nepal, the existing grievance management systems are often plagued by inefficiencies, delays, and a lack of transparency. This leads to user frustration and hinders the resolution of public grievances. 
