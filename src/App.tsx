@@ -11,6 +11,7 @@ const App: React.FC = () => {
       <GrievanceForm></GrievanceForm>
       <Footer></Footer>
 
+
     </div>
   );
 };
