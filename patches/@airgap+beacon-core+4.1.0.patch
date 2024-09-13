@@ -1,0 +1,12 @@
+diff --git a/node_modules/@airgap/beacon-core/dist/esm/transports/clients/CommunicationClient.js b/node_modules/@airgap/beacon-core/dist/esm/transports/clients/CommunicationClient.js
+index 6faf6f1..dc0cc5c 100644
+--- a/node_modules/@airgap/beacon-core/dist/esm/transports/clients/CommunicationClient.js
++++ b/node_modules/@airgap/beacon-core/dist/esm/transports/clients/CommunicationClient.js
+@@ -1,6 +1,6 @@
+ import { toHex, getHexHash, sealCryptobox } from '@airgap/beacon-utils';
+ import { convertPublicKeyToX25519, convertSecretKeyToX25519 } from '@stablelib/ed25519';
+-import { clientSessionKeys, serverSessionKeys } from '@stablelib/x25519-session';
++import { clientSessionKeys, /*serverSessionKeys*/ } from '@stablelib/x25519-session';
+ /**
+  * @internalapi
+  *
