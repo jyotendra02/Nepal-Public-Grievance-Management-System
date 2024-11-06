@@ -6,6 +6,7 @@ import FileUpload from "./FileUpload";
 
 type FormData = {
   [key: string]: string | FileList | null;
+  uid: string;
   name: string;
   fatherName: string;
   mobileNumber: string;
@@ -20,7 +21,9 @@ type FormData = {
 };
 
 function GrievanceForm() {
+  // Initialize form data with a unique UID based on timestamp
   const initialFormData: FormData = {
+    uid: Date.now().toString(),
     name: "",
     fatherName: "",
     mobileNumber: "",
@@ -32,25 +35,19 @@ function GrievanceForm() {
     grievanceTitle: "",
     grievanceDescription: "",
     policeStation: "",
-   
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [showPdf, setShowPdf] = useState(false);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  // Handle input change for form fields
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     let newValue: string | FileList | null = value;
 
     if (type === "file") {
       const fileInput = e.target as HTMLInputElement;
-      if (fileInput.files && fileInput.files.length > 0) {
-        newValue = fileInput.files;
-      } else {
-        newValue = null;
-      }
+      newValue = fileInput.files && fileInput.files.length > 0 ? fileInput.files : null;
     }
 
     setFormData({
@@ -59,50 +56,39 @@ function GrievanceForm() {
     });
   };
 
-  const generatePdf = () => {
-    return (
-      <Document>
-        <Page size="A4">
-          <View style={styles.container}>
-            <Text>Name: {formData.name}</Text>
-            <Text>Father's Name / Husband's Name: {formData.fatherName}</Text>
-            <Text>Mobile Number: {formData.mobileNumber}</Text>
-            <Text>Date of Birth: {formData.dob}</Text>
-            <Text>Village / Locality Name: {formData.villageLocality}</Text>
-            <Text>Address Line 1: {formData.addressLine1}</Text>
-            <Text>Address Line 2: {formData.addressLine2}</Text>
-            <Text>Pincode: {formData.pincode}</Text>
-            <Text>Grievance Title: {formData.grievanceTitle}</Text>
-            <Text>Grievance Description: {formData.grievanceDescription}</Text>
-            <Text>Nearest Police Station: {formData.policeStation}</Text>    
-          </View>
-        </Page>
-      </Document>
-    );
-  };
+  // Generate PDF document with form data, including UID
+  const generatePdf = () => (
+    <Document>
+      <Page size="A4">
+        <View style={styles.container}>
+          <Text>Complaint ID: {formData.uid}</Text>
+          <Text>Name: {formData.name}</Text>
+          <Text>Father's Name / Husband's Name: {formData.fatherName}</Text>
+          <Text>Mobile Number: {formData.mobileNumber}</Text>
+          <Text>Date of Birth: {formData.dob}</Text>
+          <Text>Village / Locality Name: {formData.villageLocality}</Text>
+          <Text>Address Line 1: {formData.addressLine1}</Text>
+          <Text>Address Line 2: {formData.addressLine2}</Text>
+          <Text>Pincode: {formData.pincode}</Text>
+          <Text>Grievance Title: {formData.grievanceTitle}</Text>
+          <Text>Grievance Description: {formData.grievanceDescription}</Text>
+          <Text>Nearest Police Station: {formData.policeStation}</Text>    
+        </View>
+      </Page>
+    </Document>
+  );
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const formDataToSend = new FormData();
-
-    for (const key in formData) {
-      if (formData.hasOwnProperty(key)) {
-        formDataToSend.append(key, formData[key] as string | Blob);
-      }
-    }
-    
-     setShowPdf(true);
-    
+    setShowPdf(true); // Show PDF preview after form submission
   };
 
   const styles = StyleSheet.create({
     container: {
       padding: 20,
     },
-    
-  }
-  );
+  });
 
   return (
     <div className="grievance-form-wrapper">
@@ -151,7 +137,14 @@ function GrievanceForm() {
           <div className="form-group">
             <label htmlFor="dob-en">Date of Birth:</label>
             <p>जन्म मिति:</p>
-            <input type="date" id="dob-en" name="dob" required onChange={handleInputChange} />
+            <input
+              type="date"
+              id="dob-en"
+              name="dob"
+              max={new Date().toISOString().split('T')[0]}
+              required
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className="form-group">
@@ -244,20 +237,21 @@ function GrievanceForm() {
           </div>
 
           {showPdf ? (
-          <div className="pdf-viewer">
-            <PDFViewer width="100%" height="500px">
-              {generatePdf()}
-            </PDFViewer>
-          </div>
-        ) : (
-          <div className="submit-button-wrapper">
-            <button type="submit" className="button">
-              Submit
-            </button>
+            <div className="pdf-viewer">
+              <PDFViewer width="100%" height="500px">
+                {generatePdf()}
+              </PDFViewer>
             </div>
-        )}
+          ) : (
+            <div className="submit-button-wrapper">
+              <button type="submit" className="button">
+                Submit
+              </button>
+            </div>
+          )}
+
           <div className="fileupload">
-          {showPdf && <FileUpload />}
+          {showPdf && <FileUpload uid={formData.uid} />}
           </div>
         </form>
       </div>
