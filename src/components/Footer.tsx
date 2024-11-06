@@ -6,7 +6,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="copyright">
-        <p>&copy; 2023 NGMS - Nepal Grievance Management System</p>
+        <p>&copy; 2023 NGMS - Rewa Grievance Management System</p>
       </div>
       <div className="contact">
         <p>Contact us:</p>
