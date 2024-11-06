@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connectWallet, getAccount } from "../utils/wallet";
 import "../css/Siteheader.css";
+
 function SiteHeader() {
   const [account, setAccount] = useState<string>("");
   const [active, setActive] = useState(false);
@@ -22,8 +23,9 @@ function SiteHeader() {
             <img src="logo.png" alt="Logo" />
           </div>
           <div className="Name">
-            <h4>Nepal Public Grievance Management System</h4>
-            <p>नेपाल सार्वजनिक गुनासो व्यवस्थापन प्रणाली</p>
+            <h4>Rewa Public Grievance Management System</h4>
+            <p>
+            रीवा सार्वजनिक गुनासो व्यवस्थापन प्रणाली</p>
           </div>
         </div>
         <div className="links">

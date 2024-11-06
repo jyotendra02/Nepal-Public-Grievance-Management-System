@@ -1,6 +1,7 @@
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { NetworkType } from "@airgap/beacon-dapp"
 
+
 export const wallet = new BeaconWallet({
     name : "File Share",
     preferredNetwork: NetworkType.GHOSTNET,

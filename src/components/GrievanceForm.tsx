@@ -107,7 +107,7 @@ function GrievanceForm() {
   return (
     <div className="grievance-form-wrapper">
       <div className="grievance-form">
-        <h2>Grievance Form / निरिक्षाण प्रपत्र</h2>
+        <h2>Grievance Form / निरिक्षण प्रपत्र</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name-en">Name:</label>

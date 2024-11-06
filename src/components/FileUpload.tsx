@@ -26,8 +26,8 @@ const FileUpload: React.FC = () => {
             url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
             data: formData,
             headers: {
-              pinata_api_key: `76d92b17caf26289fe6c`,  
-              pinata_secret_api_key: `91d3521125be00147dc0ff64096ab8706c7533c236bfc9114a47618c5a470090`,
+              pinata_api_key: `a03e2746af4f190f5451`,  
+              pinata_secret_api_key: `776cd496b311b12e773ac3ecffec1079e3d223a3edadc12acd10a7a56fb5c2eb`,
               "Content-Type": "multipart/form-data",
             },
           });
@@ -41,12 +41,8 @@ const FileUpload: React.FC = () => {
       else {
         alert ("No File Selected")
       }
-    
-      
     };
     
-    
-  
     const retrieveFile = (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
     
@@ -96,4 +92,3 @@ const FileUpload: React.FC = () => {
   };
   
   export default FileUpload;
-  
